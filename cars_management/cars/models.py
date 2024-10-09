@@ -14,3 +14,14 @@ class Car(models.Model):
     class Meta:
         verbose_name = "Автомобиль"
         verbose_name_plural = "Автомобили"
+
+
+class Comment(models.Model):
+    content = models.TextField(verbose_name="Содержание комментария")
+    created_at = models.DateTimeField(auto_now_add=True)
+    car = models.ForeignKey(Car, on_delete=models.CASCADE, verbose_name="Автомобиль")
+    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, verbose_name="Автор")
+
+    class Meta:
+        verbose_name = "Комментарий"
+        verbose_name_plural = "Комментарии"
