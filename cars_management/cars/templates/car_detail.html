@@ -11,6 +11,16 @@
     <p><strong>Создатель:</strong> {{ car.owner }}</p>
     <p><strong>Дата создания:</strong> {{ car.created_at|date:"d.m.Y" }}</p>
 
+    {% if user.is_authenticated and user == car.owner %}
+    <div class="mt-4">
+        <a href="{% url 'car-edit' car.id %}" class="btn btn-warning">Редактировать автомобиль</a>
+        <form method="post" action="{% url 'car-delete' car.id %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Удалить автомобиль</button>
+        </form>
+    </div>
+    {% endif %}
+
     <hr>
 
     <h3>Комментарии:</h3>

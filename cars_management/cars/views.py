@@ -46,3 +46,32 @@ def car_create_view(request):
         form = CarForm()
 
     return render(request, 'car_create.html', {'form': form})
+
+
+@login_required
+def car_edit(request, pk):
+    car = get_object_or_404(Car, pk=pk)
+
+    if request.user != car.owner:
+        return redirect('car-list')
+
+    if request.method == 'POST':
+        form = CarForm(request.POST, instance=car)
+        if form.is_valid():
+            form.save()
+            return redirect('car-detail', pk=car.pk)
+    else:
+        form = CarForm(instance=car)
+
+    return render(request, 'car_edit.html', {'form': form, 'car': car})
+
+
+@login_required
+def car_delete(request, pk):
+    car = get_object_or_404(Car, pk=pk)
+
+    if request.user == car.owner:
+        if request.method == 'POST':
+            car.delete()
+
+    return redirect('car-list')
