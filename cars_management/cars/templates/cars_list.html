@@ -13,7 +13,7 @@
                     <p class="card-text">{{ car.description|truncatewords:20 }}</p>
                     <p class="text-muted">Создатель: {{ car.owner }}</p>
                     <p class="text-muted">Дата создания: {{ car.created_at|date:"d.m.Y" }}</p>
-                    <a href="#" class="btn btn-primary">Подробнее</a>
+                    <a href="{% url 'car-detail' car.pk %}" class="btn btn-primary">Подробнее</a>
                 </div>
             </div>
         </div>

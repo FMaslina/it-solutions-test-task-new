@@ -20,7 +20,7 @@ class Comment(models.Model):
     content = models.TextField(verbose_name="Содержание комментария")
     created_at = models.DateTimeField(auto_now_add=True)
     car = models.ForeignKey(Car, on_delete=models.CASCADE, verbose_name="Автомобиль")
-    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, verbose_name="Автор")
+    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, verbose_name="Автор", null=True, blank=True)
 
     class Meta:
         verbose_name = "Комментарий"

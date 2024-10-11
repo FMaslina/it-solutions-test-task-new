@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>{{ car.make }} {{ car.model }}</h1>
+    <p><strong>Год:</strong> {{ car.year }}</p>
+    <p><strong>Описание:</strong></p>
+    <p class="text-wrap text-break" style="word-break: break-word; max-width: 100%;">
+        {{ car.description }}
+    </p>
+    <p><strong>Создатель:</strong> {{ car.owner }}</p>
+    <p><strong>Дата создания:</strong> {{ car.created_at|date:"d.m.Y" }}</p>
+
+    <hr>
+
+    <h3>Комментарии:</h3>
+    <div class="list-group mb-4">
+        {% for comment in comments %}
+            <div class="list-group-item text-wrap text-break" style="word-break: break-word; max-width: 100%;">
+                <p>{{ comment.content }}</p>
+                <small class="text-muted">Автор: {{ comment.author }} | {{ comment.created_at|date:"d.m.Y H:i" }}</small>
+            </div>
+        {% empty %}
+            <p>Комментариев пока нет.</p>
+        {% endfor %}
+    </div>
+
+    <hr>
+
+    {% if user.is_authenticated %}
+    <h3>Добавить комментарий:</h3>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.content.label_tag }}
+            {{ form.content }}
+        </div>
+        <button type="submit" class="btn btn-primary">Отправить</button>
+    </form>
+    {% else %}
+    <p class="text-danger">Вы должны <a href="{% url 'login' %}">войти в систему</a>, чтобы оставить комментарий.</p>
+    {% endif %}
+</div>
+{% endblock %}
