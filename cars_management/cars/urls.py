@@ -4,6 +4,6 @@ from cars.views import car_list_view, car_detail_view
 
 
 urlpatterns = [
-    path('cars/', car_list_view, name='car-list'),
-    path('cars/<int:pk>', car_detail_view, name='car-detail')
+    path('', car_list_view, name='car-list'),
+    path('<int:pk>', car_detail_view, name='car-detail')
 ]
