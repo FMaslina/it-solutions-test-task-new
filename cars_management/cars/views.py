@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 
 from cars.models import Car
@@ -5,6 +6,8 @@ from cars.models import Car
 from cars.models import Comment
 
 from cars.forms import CommentForm
+
+from cars.forms import CarForm
 
 
 def car_list_view(request):
@@ -28,3 +31,18 @@ def car_detail_view(request, pk):
         form = CommentForm()
 
     return render(request, 'car_detail.html', {'car': car, 'comments': comments, 'form': form})
+
+
+@login_required
+def car_create_view(request):
+    if request.method == 'POST':
+        form = CarForm(request.POST)
+        if form.is_valid():
+            car = form.save(commit=False)
+            car.owner = request.user
+            car.save()
+            return redirect('car-list')
+    else:
+        form = CarForm()
+
+    return render(request, 'car_create.html', {'form': form})
