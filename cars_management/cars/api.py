@@ -43,18 +43,14 @@ class CarListCreateApiView(generics.ListCreateAPIView):
         return Response(serialized_data, status=status.HTTP_201_CREATED)
 
 
-class CommentsListByCarApiView(generics.ListAPIView):
+class CommentListCreateApiView(generics.ListCreateAPIView):
     serializer_class = CommentModelSerializer
+    queryset = Comment.objects.all()
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         car_id = self.kwargs['pk']
         return Comment.objects.filter(car_id=car_id)
-
-
-class CommentCreateApiView(generics.CreateAPIView):
-    serializer_class = CommentModelSerializer
-    queryset = Comment.objects.all()
-    permission_classes = [IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
         car_id = self.kwargs['pk']
