@@ -1,6 +1,6 @@
 from rest_framework.serializers import ModelSerializer
 
-from cars.models import Car
+from cars.models import Car, Comment
 
 
 class CarModelSerializer(ModelSerializer):
@@ -11,5 +11,5 @@ class CarModelSerializer(ModelSerializer):
 
 class CommentModelSerializer(ModelSerializer):
     class Meta:
-        model = Car
+        model = Comment
         fields = "__all__"

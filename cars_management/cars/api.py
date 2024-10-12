@@ -56,11 +56,15 @@ class CommentCreateApiView(generics.CreateAPIView):
     queryset = Comment.objects.all()
     permission_classes = [IsAuthenticated]
 
-    def perform_create(self, serializer):
+    def create(self, request, *args, **kwargs):
         car_id = self.kwargs['pk']
         try:
             car = Car.objects.get(pk=car_id)
+            new_comment = Comment.objects.create(car=car,
+                                                 author=self.request.user,
+                                                 content=request.data['content'])
+            return Response(self.serializer_class(new_comment).data, status=status.HTTP_201_CREATED)
         except Car.DoesNotExist:
-            raise NotFound('Автомобиль не найден')
-
-        serializer.save(car=car, author=self.request.user)
+            return Response({'data': 'Автомобиль не найден'}, status=status.HTTP_404_NOT_FOUND)
+        except KeyError:
+            return Response({'data': 'Недостаточно данных'}, status=status.HTTP_400_BAD_REQUEST)
