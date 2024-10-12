@@ -1,5 +1,7 @@
 from django.urls import path
 
+from cars.api import CarListCreateApiView, CarRetrieveUpdateDestroyApiView, CommentCreateApiView, \
+    CommentsListByCarApiView
 from cars.views import car_list_view, car_detail_view, car_create_view, car_edit, car_delete
 
 
@@ -7,6 +9,10 @@ urlpatterns = [
     path('', car_list_view, name='car-list'),
     path('<int:pk>', car_detail_view, name='car-detail'),
     path('creation', car_create_view, name='car-create'),
-    path('car/<int:pk>/edit/', car_edit, name='car-edit'),
-    path('car/<int:pk>/delete/', car_delete, name='car-delete'),
+    path('<int:pk>/edit/', car_edit, name='car-edit'),
+    path('<int:pk>/delete/', car_delete, name='car-delete'),
+    path('api/cars', CarListCreateApiView.as_view(), name='car-list-create-api'),
+    path('api/cars/<int:pk>', CarRetrieveUpdateDestroyApiView.as_view(), name='car-detail-update-delete-api'),
+    path('api/cars/<int:pk>/comments/', CommentCreateApiView.as_view(), name='comment-create-api'),
+    path('api/cars/<int:pk>/comments', CommentsListByCarApiView.as_view(), name='comments-list-api'),
 ]
